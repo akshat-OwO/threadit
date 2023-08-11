@@ -1,4 +1,5 @@
 import MiniCreatePost from '@/components/MiniCreatePost';
+import PostFeed from '@/components/PostFeed';
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from '@/config';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -41,6 +42,7 @@ const page: FC<pageProps> = async ({ params }) => {
                 t/{subthread.name}
             </h1>
             <MiniCreatePost session={session} />
+            <PostFeed initialPosts={subthread.posts} subThreadName={subthread.name} />
         </>
     );
 };
