@@ -2,6 +2,7 @@ import { getAuthSession } from '@/lib/auth';
 import Link from 'next/link';
 import { FC } from 'react';
 import { Icons } from './Icons';
+import SearchBar from './SearchBar';
 import UserAccountNav from './UserAccountNav';
 import { buttonVariants } from './ui/button';
 
@@ -21,6 +22,7 @@ const Navbar: FC<NavbarProps> = async ({}) => {
                 </Link>
 
                 {/* search bar */}
+                <SearchBar />
 
                 {session?.user ? (
                     <UserAccountNav user={session.user} />
