@@ -1,3 +1,4 @@
+import CommentsSection from '@/components/CommentsSection';
 import EditorOutput from '@/components/EditorOutput';
 import PostVoteServer from '@/components/post-vote/PostVoteServer';
 import { buttonVariants } from '@/components/ui/button';
@@ -65,11 +66,19 @@ const page: FC<pageProps> = async ({ params }) => {
                         new Date(post?.createdAt ?? cachedPost.createdAt)
                     )}
                 </p>
-                <h1 className='text-xl font-semibold py-2 leading-6 text-gray-900'>
+                <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
                     {post?.title ?? cachedPost.title}
                 </h1>
 
                 <EditorOutput content={post?.content ?? cachedPost.content} />
+
+                <Suspense
+                    fallback={
+                        <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />
+                    }
+                >
+                    <CommentsSection postId={post?.id ?? cachedPost.id} />
+                </Suspense>
             </div>
         </div>
     );
