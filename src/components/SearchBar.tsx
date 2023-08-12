@@ -47,7 +47,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
 
     const debounceRequest = useCallback(() => {
         request();
-    }, []);
+    }, [request]);
 
     const commandRef = useRef<HTMLDivElement>(null);
 
