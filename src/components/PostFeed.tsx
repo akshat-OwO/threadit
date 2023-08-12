@@ -6,7 +6,7 @@ import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import Post from './Post';
 
 interface PostFeedProps {
@@ -22,7 +22,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subThreadName }) => {
         threshold: 1,
     });
 
-    const {data: session} = useSession();
+    const { data: session } = useSession();
 
     const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
         queryKey: ['infinite-query'],
@@ -44,6 +44,12 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subThreadName }) => {
         },
     });
 
+    useEffect(() => {
+        if (entry?.isIntersecting) {
+            fetchNextPage()
+        }
+    }, [entry, fetchNextPage])
+
     const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
 
     return (
@@ -55,16 +61,33 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subThreadName }) => {
                     return acc;
                 }, 0);
 
-                const currentVote = post.vote.find((vote) => vote.userId === session?.user.id)
+                const currentVote = post.vote.find(
+                    (vote) => vote.userId === session?.user.id
+                );
 
                 if (index === posts.length - 1) {
                     return (
                         <li key={post.id} ref={ref}>
-                            <Post commentAmount={post.comments.length} post={post} subThreadName={post.subThread.name} />
+                            <Post
+                                currentVote={currentVote}
+                                votesAmount={votesAmount}
+                                commentAmount={post.comments.length}
+                                post={post}
+                                subThreadName={post.subThread.name}
+                            />
                         </li>
-                    )
+                    );
                 } else {
-                    return <Post commentAmount={post.comments.length} post={post} key={post.id} subThreadName={post.subThread.name} />
+                    return (
+                        <Post
+                            currentVote={currentVote}
+                            votesAmount={votesAmount}
+                            commentAmount={post.comments.length}
+                            post={post}
+                            key={post.id}
+                            subThreadName={post.subThread.name}
+                        />
+                    );
                 }
             })}
         </ul>
