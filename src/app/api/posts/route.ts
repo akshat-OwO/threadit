@@ -48,7 +48,9 @@ export async function GET(req: Request) {
         } else if (session) {
             whereClause = {
                 subThread: {
-                    id: followedCommunitiesIds,
+                    id: {
+                        in: followedCommunitiesIds,
+                    },
                 },
             };
         }
