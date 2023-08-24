@@ -17,8 +17,8 @@ interface EditorOutputProps {
 
 const style = {
     paragraph: {
-        fontSize: '0.075rem',
-        lineHeight: '1.25rem',
+        fontSize: '1rem',
+        lineHeight: '2rem',
     },
 };
 
