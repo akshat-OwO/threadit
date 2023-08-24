@@ -1,6 +1,7 @@
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { SubthreadValidator } from '@/lib/validators/subthread';
+import kebabCase from 'lodash.kebabcase';
 import { z } from 'zod';
 
 export async function POST(req: Request) {
@@ -13,10 +14,11 @@ export async function POST(req: Request) {
 
         const body = await req.json();
         const { name } = SubthreadValidator.parse(body);
+        const kebabName = kebabCase(name);
 
         const subthreadExists = await db.subThread.findFirst({
             where: {
-                name,
+                name: kebabName,
             },
         });
 
@@ -26,7 +28,7 @@ export async function POST(req: Request) {
 
         const subthread = await db.subThread.create({
             data: {
-                name,
+                name: kebabName,
                 creatorId: session.user.id,
             },
         });

@@ -42,7 +42,7 @@ const page: FC<pageProps> = async ({ params }) => {
     if (!post && !cachedPost) return notFound();
 
     return (
-        <div className="h-full flex flex-col sm:flex-row item-center sm:items-start justify-between">
+        <div className="h-full flex flex-row item-center sm:items-start justify-between">
             <Suspense fallback={<PostVoteShell />}>
                 <PostVoteServer
                     postId={post?.id ?? cachedPost.id}
