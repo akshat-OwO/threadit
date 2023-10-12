@@ -7,6 +7,7 @@ import { toast } from '@/hooks/use-toast';
 import { CreateSubthreadPayload } from '@/lib/validators/subthread';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
+import kebabCase from 'lodash.kebabcase';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
@@ -21,7 +22,7 @@ const Page: FC<pageProps> = ({}) => {
     const { mutate: createCommunity, isLoading } = useMutation({
         mutationFn: async () => {
             const payload: CreateSubthreadPayload = {
-                name: input,
+                name: kebabCase(input),
             };
             const { data } = await axios.post('/api/subthread', payload);
             return data as string;
